@@ -1,0 +1,433 @@
+{
+  "environment": {
+    "numpy": "2.5.3",
+    "python": "3.13.15",
+    "qiskit": "2.5.0",
+    "qiskit-aer": "0.17.2"
+  },
+  "generated_at_utc": "2026-10-08T15:52:25.837901+00:00",
+  "line_inference": {
+    "admittance": {
+      "imag": -4.951127839142938,
+      "real": 0.4971594488989317
+    },
+    "impedance": {
+      "imag": 0.1999580369436047,
+      "real": 0.020078461045555072
+    },
+    "predicted_s3": {
+      "imag": -0.009969713805769507,
+      "real": -0.9501095763050748
+    },
+    "predicted_s4": {
+      "imag": 0.19981478466163458,
+      "real": 0.199665446423786
+    },
+    "residual_norm": 0.0003989423982459343
+  },
+  "phase_precision_ablation": [
+    {
+      "phase_qubits": 2,
+      "relative_solution_error": 0.24999999999999972,
+      "residual_norm": 0.31099638261561774,
+      "solution_state_fidelity": 0.9999999999999998
+    },
+    {
+      "phase_qubits": 3,
+      "relative_solution_error": 0.241051567340864,
+      "residual_norm": 0.24241359180086366,
+      "solution_state_fidelity": 0.9985273352987394
+    },
+    {
+      "phase_qubits": 4,
+      "relative_solution_error": 2.9417923982182553e-16,
+      "residual_norm": 5.4672143489065705e-16,
+      "solution_state_fidelity": 0.9999999999999998
+    },
+    {
+      "phase_qubits": 5,
+      "relative_solution_error": 2.9417923982182553e-16,
+      "residual_norm": 5.4672143489065705e-16,
+      "solution_state_fidelity": 0.9999999999999998
+    }
+  ],
+  "quantum_circuit": {
+    "ancilla_qubits": 1,
+    "calibration": {
+      "condition_number": 2.999999999999999,
+      "eigenvalues": [
+        4.950495049504951,
+        4.950495049504951,
+        14.85148514851485,
+        14.85148514851485
+      ],
+      "logical_phase_bins": [
+        5,
+        5,
+        15,
+        15
+      ],
+      "maximum_relative_eigenvalue_error": 3.588240815588505e-16,
+      "phase_scale": 15.841584158415838,
+      "reconstructed_eigenvalues": [
+        4.95049504950495,
+        4.95049504950495,
+        14.851485148514849,
+        14.851485148514849
+      ]
+    },
+    "logical_qubits": 7,
+    "phase_qubits": 4,
+    "raw_depth": 29,
+    "raw_operation_counts": {
+      "c-unitary": 8,
+      "c4ry": 1,
+      "c4ry_o1": 1,
+      "c4ry_o10": 1,
+      "c4ry_o11": 1,
+      "c4ry_o12": 1,
+      "c4ry_o13": 1,
+      "c4ry_o14": 1,
+      "c4ry_o2": 1,
+      "c4ry_o3": 1,
+      "c4ry_o4": 1,
+      "c4ry_o5": 1,
+      "c4ry_o6": 1,
+      "c4ry_o7": 1,
+      "c4ry_o8": 1,
+      "c4ry_o9": 1,
+      "h": 8,
+      "permutation": 2,
+      "qft": 1,
+      "qft_dg": 1,
+      "state_preparation": 1
+    },
+    "reciprocal_constant": 2.475247524752475,
+    "system_qubits": 2,
+    "transpiled_depth": 817,
+    "transpiled_operation_counts": {
+      "cp": 12,
+      "cx": 437,
+      "h": 136,
+      "ry": 60,
+      "swap": 8,
+      "t": 240,
+      "tdg": 180,
+      "u": 120,
+      "unitary": 3,
+      "x": 56
+    }
+  },
+  "stochastic": {
+    "active_power_relative_standard_deviation": 0.01,
+    "convergence_rate": 1.0,
+    "correlation_convention": "paper_Fig4_positive_bus3_load_magnitude_vs_bus4_injection",
+    "empirical_injection_correlation": 0.7378892435906237,
+    "empirical_signed_injection_correlation": -0.7378892435906237,
+    "empirical_voltage_correlation": 0.9969482431183686,
+    "maximum_iterations_observed": 5,
+    "n_samples": 5000,
+    "random_seed": 210404888,
+    "requested_injection_correlation": 0.75,
+    "tolerance": 1e-05,
+    "variance_status": "reconstructed_assumption_not_reported_in_paper"
+  },
+  "test_i": {
+    "classical": {
+      "buses": [
+        {
+          "bus": 1,
+          "calculated_p_pu": -0.5499999029148555,
+          "calculated_q_pu": -0.19999972142571254,
+          "specified_p_pu": -0.55,
+          "specified_q_pu": -0.2,
+          "voltage_angle_rad": -0.11250016892289376,
+          "voltage_magnitude_pu": 0.9430202551678268
+        },
+        {
+          "bus": 2,
+          "calculated_p_pu": -0.5499998999089692,
+          "calculated_q_pu": -0.1799997363461961,
+          "specified_p_pu": -0.55,
+          "specified_q_pu": -0.18,
+          "voltage_angle_rad": -0.11258779329075638,
+          "voltage_magnitude_pu": 0.9444561214462759
+        },
+        {
+          "bus": 3,
+          "calculated_p_pu": -0.9499998566318781,
+          "calculated_q_pu": -0.01000024447427669,
+          "specified_p_pu": -0.95,
+          "specified_q_pu": -0.01,
+          "voltage_angle_rad": -0.1143752502637025,
+          "voltage_magnitude_pu": 0.9948595209849103
+        },
+        {
+          "bus": 4,
+          "calculated_p_pu": 0.19999984004331928,
+          "calculated_q_pu": 0.20000009077197417,
+          "specified_p_pu": 0.2,
+          "specified_q_pu": 0.2,
+          "voltage_angle_rad": -0.039247755035626664,
+          "voltage_magnitude_pu": 1.0182465972512944
+        },
+        {
+          "bus": 5,
+          "calculated_p_pu": 1.875690946770295,
+          "calculated_q_pu": 0.4469108850533259,
+          "specified_p_pu": 0.0,
+          "specified_q_pu": 0.0,
+          "voltage_angle_rad": 0.0,
+          "voltage_magnitude_pu": 1.002
+        }
+      ],
+      "converged": true,
+      "iterations": 6,
+      "max_mismatch": 2.785742874711339e-07,
+      "metadata": {
+        "B_double_prime": [
+          [
+            9.900990099009901,
+            -4.9504950495049505,
+            -0.0,
+            -0.0
+          ],
+          [
+            -4.9504950495049505,
+            9.900990099009901,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            9.900990099009901,
+            -4.9504950495049505
+          ],
+          [
+            -0.0,
+            -0.0,
+            -4.9504950495049505,
+            9.900990099009901
+          ]
+        ],
+        "B_prime": [
+          [
+            9.900990099009901,
+            -4.9504950495049505,
+            -0.0,
+            -0.0
+          ],
+          [
+            -4.9504950495049505,
+            9.900990099009901,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            9.900990099009901,
+            -4.9504950495049505
+          ],
+          [
+            -0.0,
+            -0.0,
+            -4.9504950495049505,
+            9.900990099009901
+          ]
+        ],
+        "b_matrix_mode": "full_imaginary_ybus",
+        "fixed_iterations": 6,
+        "formulation": "paper_equations",
+        "linear_system_factory": "numpy",
+        "tolerance": 1e-05
+      },
+      "solver": "fast_decoupled[numpy]"
+    },
+    "maximum_quantum_classical_state_difference": 0.0,
+    "newton": {
+      "buses": [
+        {
+          "bus": 1,
+          "calculated_p_pu": -0.5499999438454335,
+          "calculated_q_pu": -0.19999992663842553,
+          "specified_p_pu": -0.55,
+          "specified_q_pu": -0.2,
+          "voltage_angle_rad": -0.11250017948215343,
+          "voltage_magnitude_pu": 0.943020207705751
+        },
+        {
+          "bus": 2,
+          "calculated_p_pu": -0.5499999478192706,
+          "calculated_q_pu": -0.1799999302541883,
+          "specified_p_pu": -0.55,
+          "specified_q_pu": -0.18,
+          "voltage_angle_rad": -0.11258780441305415,
+          "voltage_magnitude_pu": 0.9444560748223865
+        },
+        {
+          "bus": 3,
+          "calculated_p_pu": -0.9499999951542001,
+          "calculated_q_pu": -0.009999978173478285,
+          "specified_p_pu": -0.95,
+          "specified_q_pu": -0.01,
+          "voltage_angle_rad": -0.11437525803866035,
+          "voltage_magnitude_pu": 0.9948595486120527
+        },
+        {
+          "bus": 4,
+          "calculated_p_pu": 0.2000000003125367,
+          "calculated_q_pu": 0.20000000511038943,
+          "specified_p_pu": 0.2,
+          "specified_q_pu": 0.2,
+          "voltage_angle_rad": -0.03924774341848567,
+          "voltage_magnitude_pu": 1.0182466035577598
+        },
+        {
+          "bus": 5,
+          "calculated_p_pu": 1.8756910225503742,
+          "calculated_q_pu": 0.4469111903957702,
+          "specified_p_pu": 0.0,
+          "specified_q_pu": 0.0,
+          "voltage_angle_rad": 0.0,
+          "voltage_magnitude_pu": 1.002
+        }
+      ],
+      "converged": false,
+      "iterations": 3,
+      "max_mismatch": 7.33615744819005e-08,
+      "metadata": {
+        "fixed_iterations": 3,
+        "tolerance": 1e-10
+      },
+      "solver": "newton_raphson"
+    },
+    "quantum": {
+      "buses": [
+        {
+          "bus": 1,
+          "calculated_p_pu": -0.5499999029148555,
+          "calculated_q_pu": -0.19999972142571254,
+          "specified_p_pu": -0.55,
+          "specified_q_pu": -0.2,
+          "voltage_angle_rad": -0.11250016892289376,
+          "voltage_magnitude_pu": 0.9430202551678268
+        },
+        {
+          "bus": 2,
+          "calculated_p_pu": -0.5499998999089692,
+          "calculated_q_pu": -0.1799997363461961,
+          "specified_p_pu": -0.55,
+          "specified_q_pu": -0.18,
+          "voltage_angle_rad": -0.11258779329075638,
+          "voltage_magnitude_pu": 0.9444561214462759
+        },
+        {
+          "bus": 3,
+          "calculated_p_pu": -0.9499998566318781,
+          "calculated_q_pu": -0.01000024447427669,
+          "specified_p_pu": -0.95,
+          "specified_q_pu": -0.01,
+          "voltage_angle_rad": -0.1143752502637025,
+          "voltage_magnitude_pu": 0.9948595209849103
+        },
+        {
+          "bus": 4,
+          "calculated_p_pu": 0.19999984004331928,
+          "calculated_q_pu": 0.20000009077197417,
+          "specified_p_pu": 0.2,
+          "specified_q_pu": 0.2,
+          "voltage_angle_rad": -0.039247755035626664,
+          "voltage_magnitude_pu": 1.0182465972512944
+        },
+        {
+          "bus": 5,
+          "calculated_p_pu": 1.875690946770295,
+          "calculated_q_pu": 0.4469108850533259,
+          "specified_p_pu": 0.0,
+          "specified_q_pu": 0.0,
+          "voltage_angle_rad": 0.0,
+          "voltage_magnitude_pu": 1.002
+        }
+      ],
+      "converged": true,
+      "iterations": 6,
+      "max_mismatch": 2.785742874711339e-07,
+      "metadata": {
+        "B_double_prime": [
+          [
+            9.900990099009901,
+            -4.9504950495049505,
+            -0.0,
+            -0.0
+          ],
+          [
+            -4.9504950495049505,
+            9.900990099009901,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            9.900990099009901,
+            -4.9504950495049505
+          ],
+          [
+            -0.0,
+            -0.0,
+            -4.9504950495049505,
+            9.900990099009901
+          ]
+        ],
+        "B_prime": [
+          [
+            9.900990099009901,
+            -4.9504950495049505,
+            -0.0,
+            -0.0
+          ],
+          [
+            -4.9504950495049505,
+            9.900990099009901,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            9.900990099009901,
+            -4.9504950495049505
+          ],
+          [
+            -0.0,
+            -0.0,
+            -4.9504950495049505,
+            9.900990099009901
+          ]
+        ],
+        "b_matrix_mode": "full_imaginary_ybus",
+        "cache_hits": 1,
+        "cache_misses": 1,
+        "fixed_iterations": 6,
+        "formulation": "paper_equations",
+        "linear_system_factory": "qiskit_hhl",
+        "tolerance": 1e-05
+      },
+      "solver": "fast_decoupled[qiskit_hhl]"
+    },
+    "quantum_final": {
+      "V3": 0.9948595209849103,
+      "V4": 1.0182465972512944,
+      "theta3_rad": -0.1143752502637025,
+      "theta4_rad": -0.039247755035626664
+    }
+  },
+  "test_ii": {
+    "paper_reported_iterations": 34,
+    "quantum_final_V1": 0.6739713489897105,
+    "quantum_final_V2": 0.7814062918588711,
+    "quantum_iterations": 32
+  }
+}

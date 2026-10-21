@@ -48,3 +48,41 @@ def test_less_than_four_phase_qubits_degrades_fixed_scale_solution() -> None:
 
     assert errors[4] < 1e-10
     assert errors[3] > 1e-3
+
+
+def test_executed_circuit_matches_direct_solve_when_phase_bins_are_exact() -> None:
+    # Bins 5 (0b0101) and 15 are asymmetric/symmetric under bit reversal, so this catches a
+    # mismatch between the QPE output bit order and the reciprocal-rotation control states.
+    matrix, _ = fast_decoupled_matrices(paper_case5())
+    rhs = np.asarray([-0.55, -0.55, -0.95, 0.20])
+    direct = np.linalg.solve(matrix, rhs)
+    for phase_qubits in (2, 4):
+        config = HHLConfiguration(phase_qubits=phase_qubits, execution="statevector")
+        result = QiskitHHLFactory(configuration=config).prepare(matrix).solve(rhs)
+        assert np.linalg.norm(result.solution - direct) / np.linalg.norm(direct) < 1e-10
+        assert result.metadata["imaginary_solution_norm_after_phase_fix"] < 1e-10
+        assert 0 < result.metadata["postselection_probability_phase_zero_ancilla_one"] < 1
+
+
+def test_executed_circuit_agrees_with_aer_statevector() -> None:
+    from qiskit import transpile
+    from qiskit_aer import AerSimulator
+
+    matrix, _ = fast_decoupled_matrices(paper_case5())
+    rhs = np.asarray([-0.55, -0.55, -0.95, 0.20])
+    config = HHLConfiguration(phase_qubits=3, scale_strategy="fixed", fixed_scale=16.0)
+    prepared = QiskitHHLFactory(configuration=config).prepare(matrix)
+    circuit = prepared.circuit_for_rhs(rhs)
+    circuit.save_statevector()
+    backend = AerSimulator(method="statevector")
+    aer_state = np.asarray(backend.run(transpile(circuit, backend)).result().get_statevector())
+
+    unit_rhs = rhs / np.linalg.norm(rhs)
+    indices = (1 << 5) | (np.arange(4) << 3)
+    selected = aer_state[indices]
+    overlap = np.vdot(unit_rhs, selected)
+    aer_solution = (selected * np.conj(overlap) / abs(overlap)).real
+    aer_solution *= np.linalg.norm(rhs) / prepared.reciprocal_constant
+
+    solution, _ = prepared.execute_statevector(rhs)
+    assert np.max(np.abs(solution - aer_solution)) < 1e-12

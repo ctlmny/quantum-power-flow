@@ -1,0 +1,90 @@
+environment: {'python': '3.13.15', 'platform': 'Windows-11-10.0.26200-SP0', 'qiskit': '2.5.0', 'qiskit-aer': '0.17.2', 'numpy': '2.5.3', 'scipy': '1.18.1', 'pandas': '3.0.6', 'matplotlib': '3.11.2', 'PyYAML': '6.0.3'}
+Part 1: normal case
+                              method     V3_pu     V4_pu  theta3_rad  theta4_rad  max_abs_diff_vs_paper_after_6  max_state_error_vs_reference_after_6  rounds_to_tolerance_1e-6  state_error_at_tolerance  median_linear_solve_error  mean_postselection_probability  expected_circuit_runs
+0             Classical FDLF (numpy)  0.994860  1.018247   -0.114375   -0.039248                       0.000060                          6.635160e-08                         6              6.635160e-08               0.000000e+00                             NaN                    NaN
+1  HHL spectral model (repo default)  0.994860  1.018247   -0.114375   -0.039248                       0.000060                          6.635160e-08                         6              6.635160e-08               1.459137e-16                             NaN                    NaN
+2              HHL circuit, original  0.996081  1.019350   -0.112987   -0.038067                       0.001413                          3.424072e-03                        23              1.467691e-07               4.999822e-01                        0.061510             749.372294
+3       HHL circuit, bit-order fixed  0.994860  1.018247   -0.114375   -0.039248                       0.000060                          6.635160e-08                         6              6.635160e-08               2.548901e-14                        0.164033             114.093701
+Circuit resources
+     calibration  phase_qubits  logical_qubits  phase_scale eigenvalue_bins  max_rel_eigenvalue_error  controlled_rotations  depth  cx_count  total_gates
+0   spectral_fit             1               4    29.702970               1              2.000000e+00                     1    111        23          189
+1   spectral_fit             2               5    19.801980             1/3              3.588241e-16                     3    265        75          388
+2   spectral_fit             3               6    19.801980             2/6              3.588241e-16                     7    669       199          861
+3   spectral_fit             4               7    15.841584            5/15              3.588241e-16                    15   1064       485         1705
+4   spectral_fit             5               8    15.841584           10/30              3.588241e-16                    31   2349      1381         3862
+5   spectral_fit             6               9    15.087223           21/63              3.588241e-16                    63   5426      3743         9372
+6   power_of_two             1               4    16.000000               1              6.160000e-01                     1    111        23          189
+7   power_of_two             2               5    16.000000             1/3              1.920000e-01                     3    311        81          477
+8   power_of_two             3               6    16.000000             2/7              1.920000e-01                     7    817       225         1110
+9   power_of_two             4               7    16.000000            5/15              1.000000e-02                    15   1095       489         1770
+10  power_of_two             5               8    16.000000           10/30              1.000000e-02                    31   2475      1405         4087
+11  power_of_two             6               9    16.000000           20/59              1.000000e-02                    63   5443      3745         9411
+Part 2: original vs fixed circuit
+  part2 spectral_fit n=1 done
+  part2 spectral_fit n=2 done
+  part2 spectral_fit n=3 done
+  part2 spectral_fit n=4 done
+  part2 spectral_fit n=5 done
+  part2 spectral_fit n=6 done
+  part2 power_of_two n=1 done
+  part2 power_of_two n=2 done
+  part2 power_of_two n=3 done
+  part2 power_of_two n=4 done
+  part2 power_of_two n=5 done
+  part2 power_of_two n=6 done
+     calibration  phase_qubits  spectral_model_linear_error  spectral_model_rounds  spectral_model_state_error  original_circuit_linear_error  original_circuit_rounds  original_circuit_state_error  circuit_linear_error  circuit_rounds  circuit_state_error
+0   spectral_fit             1                 6.406401e-01                     38                1.821850e-07                       0.880880                    171.0                  2.296218e-07          8.808801e-01             171         2.296218e-07
+1   spectral_fit             2                 1.717797e-16                      6                6.635160e-08                       0.480480                     23.0                  1.467691e-07          1.420432e-15               6         6.635160e-08
+2   spectral_fit             3                 1.717797e-16                      6                6.635160e-08                       0.276687                      NaN                           NaN          1.241200e-15               6         6.635160e-08
+3   spectral_fit             4                 1.717797e-16                      6                6.635160e-08                       0.480480                     23.0                  1.467691e-07          2.539436e-14               6         6.635160e-08
+4   spectral_fit             5                 1.717797e-16                      6                6.635160e-08                       0.276687                      NaN                           NaN          4.205037e-14               6         6.635160e-08
+5   spectral_fit             6                 1.717797e-16                      6                6.635160e-08                       0.480480                     23.0                  1.467691e-07          6.284953e-14               6         6.635160e-08
+6   power_of_two             1                 4.362714e-01                    104                6.709516e-08                       0.609315                    141.0                  6.643843e-08          6.093149e-01             141         6.643843e-08
+7   power_of_two             2                 2.376238e-01                     14                4.496885e-08                       0.379194                     26.0                  6.120945e-08          1.839881e-01              24         4.879727e-08
+8   power_of_two             3                 2.289662e-01                     13                9.015765e-08                       0.101667                      9.0                  4.389556e-08          5.795686e-02               8         6.177791e-08
+9   power_of_two             4                 9.900990e-03                      6                1.401449e-07                       0.480174                     23.0                  1.440243e-07          1.207396e-02               6         1.370855e-07
+10  power_of_two             5                 9.900990e-03                      6                1.401449e-07                       0.249009                    176.0                  6.123018e-08          2.518363e-02               7         8.167394e-08
+11  power_of_two             6                 9.703039e-03                      6                1.402369e-07                       0.829218                      NaN                           NaN          2.263584e-02               7         6.036158e-08
+Part 3: precision x loading sweep
+  part3 x0.5 done
+  part3 x1 done
+  part3 x1.5 done
+  part3 x2 done
+  part3 x2.5 done
+  part3 x2.8 done
+  part3 x3 done
+  part3 Test II (stressed) done
+                  case                        objective   calibration  phase_qubits  logical_qubits  cx_per_circuit   depth  rounds   state_error  expected_total_cx
+0                 x0.5  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0     6.0  3.072881e-08       12605.858091
+1                 x0.5  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0     6.0  3.760636e-08       91349.287541
+2                 x0.5    error <= 1e-4 within 6 rounds  spectral_fit           2.0             5.0            75.0   265.0     6.0  3.072881e-08       12605.858091
+3                 x0.5    error <= 1e-4 within 6 rounds  power_of_two           3.0             6.0           225.0   817.0     8.0  4.920000e-08       96589.419689
+4                   x1  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0     6.0  6.635160e-08        8557.027587
+5                   x1  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0     6.0  1.370855e-07       50606.132150
+6                   x1    error <= 1e-4 within 6 rounds  spectral_fit           2.0             5.0            75.0   265.0     6.0  6.635160e-08        8557.027587
+7                   x1    error <= 1e-4 within 6 rounds  power_of_two           3.0             6.0           225.0   817.0     8.0  6.177791e-08       92342.657506
+8                 x1.5  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0     9.0  6.604531e-08        8888.005356
+9                 x1.5  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0     9.0  8.772499e-08       57172.761877
+10                x1.5    error <= 1e-4 within 6 rounds  spectral_fit           2.0             5.0            75.0   265.0     9.0  6.604531e-08        8888.005356
+11                x1.5    error <= 1e-4 within 6 rounds  power_of_two           3.0             6.0           225.0   817.0    11.0  7.123038e-08      101970.259223
+12                  x2  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0    12.0  1.108557e-07        9407.349902
+13                  x2  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0    12.0  1.533700e-07       61659.008742
+14                  x2    error <= 1e-4 within 6 rounds  spectral_fit           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+15                  x2    error <= 1e-4 within 6 rounds  power_of_two           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+16                x2.5  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0    17.0  4.168196e-07       11434.300353
+17                x2.5  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0    18.0  2.196069e-07       78774.257431
+18                x2.5    error <= 1e-4 within 6 rounds  spectral_fit           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+19                x2.5    error <= 1e-4 within 6 rounds  power_of_two           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+20                x2.8  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0    26.0  6.220623e-07       16474.969485
+21                x2.8  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0    26.0  7.420347e-07      107541.770348
+22                x2.8    error <= 1e-4 within 6 rounds  spectral_fit           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+23                x2.8    error <= 1e-4 within 6 rounds  power_of_two           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+24                  x3  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0    68.0  2.274895e-06       41543.182344
+25                  x3  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0    70.0  1.879553e-06      278598.243272
+26                  x3    error <= 1e-4 within 6 rounds  spectral_fit           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+27                  x3    error <= 1e-4 within 6 rounds  power_of_two           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+28  Test II (stressed)  converge to 1e-6, error <= 1e-4  spectral_fit           2.0             5.0            75.0   265.0    39.0  5.216882e-07       51319.917991
+29  Test II (stressed)  converge to 1e-6, error <= 1e-4  power_of_two           4.0             7.0           489.0  1095.0    39.0  5.289246e-07      284489.697371
+30  Test II (stressed)    error <= 1e-4 within 6 rounds  spectral_fit           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+31  Test II (stressed)    error <= 1e-4 within 6 rounds  power_of_two           NaN             NaN             NaN     NaN     NaN           NaN                NaN
+Wrote outputs to analysis\output\study

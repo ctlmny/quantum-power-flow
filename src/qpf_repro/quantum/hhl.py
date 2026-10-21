@@ -1,8 +1,11 @@
 """Finite-register HHL model for the fixed fast-decoupled QPF matrices.
 
-The implementation uses Qiskit to construct the QPE / reciprocal-rotation circuit used for
-inspection, while the deterministic statevector-equivalent inverse map is evaluated spectrally.
-This avoids repeatedly transpiling the same seven-qubit circuit in the 5,000-sample experiment.
+The implementation uses Qiskit to construct the QPE / reciprocal-rotation circuit. By default
+(``execution="spectral_model"``) linear solves use the idealized inverse map
+``V diag(1/lambda_bin) V^T``, which avoids repeatedly simulating the same circuit in the
+5,000-sample experiment. With ``execution="statevector"`` every solve instead evolves the
+right-hand side through the constructed circuit, postselects, and reads out the solution, so the
+result includes finite-register QPE leakage and any circuit-construction error.
 """
 
 from __future__ import annotations
@@ -14,6 +17,7 @@ from typing import Any, Literal
 import numpy as np
 from qiskit import QuantumCircuit, QuantumRegister, transpile
 from qiskit.circuit.library import RYGate, StatePreparation, UnitaryGate, phase_estimation
+from qiskit.quantum_info import Operator
 from qiskit_aer import AerSimulator
 from scipy.linalg import expm
 
@@ -21,6 +25,7 @@ from ..linear import LinearSolveResult
 from ..models import FloatArray
 
 ScaleStrategy = Literal["spectral_fit", "power_of_two", "fixed"]
+Execution = Literal["spectral_model", "statevector"]
 
 
 @dataclass(frozen=True, slots=True)
@@ -30,12 +35,19 @@ class HHLConfiguration:
     fixed_scale: float | None = None
     reciprocal_constant_ratio: float = 0.5
     transpile_optimization_level: int = 0
+    execution: Execution = "spectral_model"
 
     def __post_init__(self) -> None:
         if self.phase_qubits < 1:
             raise ValueError("phase_qubits must be positive")
         if self.scale_strategy == "fixed" and (self.fixed_scale is None or self.fixed_scale <= 0):
             raise ValueError("fixed_scale must be positive for fixed scaling")
+        if self.execution not in ("spectral_model", "statevector"):
+            raise ValueError("execution must be 'spectral_model' or 'statevector'")
+
+
+def _reverse_bits(value: int, width: int) -> int:
+    return int(format(value, f"0{width}b")[::-1], 2)
 
 
 @dataclass(frozen=True, slots=True)
@@ -113,6 +125,7 @@ class QiskitHHLPreparedSystem:
     core_circuit: QuantumCircuit
     _inverse_map: FloatArray
     _stats: dict[str, Any] | None = None
+    _core_unitary: np.ndarray | None = None
 
     @property
     def dimension(self) -> int:
@@ -160,7 +173,12 @@ class QiskitHHLPreparedSystem:
             lambda_est = logical_bin * calibration.phase_scale / resolution
             ratio = min(1.0, reciprocal_constant / lambda_est)
             angle = 2.0 * np.arcsin(ratio)
-            gate = RYGate(float(angle)).control(configuration.phase_qubits, ctrl_state=logical_bin)
+            # Qiskit's ``phase_estimation`` leaves the phase register bit-reversed relative to the
+            # integer bin (bin 5 = 0b0101 is read as 0b1010), so control on the reversed pattern.
+            gate = RYGate(float(angle)).control(
+                configuration.phase_qubits,
+                ctrl_state=_reverse_bits(logical_bin, configuration.phase_qubits),
+            )
             core.append(gate, list(phase) + [ancilla[0]])
         core.compose(qpe.inverse(), list(phase) + list(system), inplace=True)
         return cls(
@@ -187,11 +205,46 @@ class QiskitHHLPreparedSystem:
         circuit.compose(self.core_circuit, range(self.logical_qubits), inplace=True)
         return circuit
 
+    def execute_statevector(self, rhs: FloatArray) -> tuple[FloatArray, dict[str, float]]:
+        """Run ``rhs`` through the HHL circuit and return the postselected, rescaled solution.
+
+        The core circuit's unitary is computed once and cached. The phase register ``|0...0>``
+        and ancilla ``|1>`` are postselected, the global phase is fixed so the overlap with ``b``
+        is positive real, and the amplitudes are rescaled by ``|b| / C``.
+        """
+
+        rhs = np.asarray(rhs, dtype=float)
+        norm = float(np.linalg.norm(rhs))
+        if norm == 0:
+            raise ValueError("rhs must be nonzero")
+        if self._core_unitary is None:
+            self._core_unitary = Operator(self.core_circuit).data
+        phase_qubits = self.configuration.phase_qubits
+        unit_rhs = rhs / norm
+        initial = np.zeros(1 << self.logical_qubits, dtype=complex)
+        system_indices = np.arange(self.dimension) << phase_qubits
+        initial[system_indices] = unit_rhs
+        final = self._core_unitary @ initial
+        selected = final[(1 << (phase_qubits + self.system_qubits)) | system_indices]
+        success_probability = float(np.sum(np.abs(selected) ** 2))
+        overlap = np.vdot(unit_rhs, selected)
+        if abs(overlap) > 0:
+            selected = selected * np.conj(overlap) / abs(overlap)
+        solution = selected.real * norm / self.reciprocal_constant
+        return np.asarray(solution, dtype=float), {
+            "postselection_probability_phase_zero_ancilla_one": success_probability,
+            "imaginary_solution_norm_after_phase_fix": float(np.linalg.norm(selected.imag)),
+        }
+
     def solve(self, rhs: FloatArray) -> LinearSolveResult:
         rhs = np.asarray(rhs, dtype=float)
         if rhs.shape != (self.dimension,):
             raise ValueError(f"rhs must have shape ({self.dimension},)")
-        solution = self._inverse_map @ rhs
+        execution_metadata: dict[str, float] = {}
+        if self.configuration.execution == "statevector":
+            solution, execution_metadata = self.execute_statevector(rhs)
+        else:
+            solution = self._inverse_map @ rhs
         direct = np.linalg.solve(self.matrix, rhs)
         residual = float(np.linalg.norm(self.matrix @ solution - rhs))
         norm_solution = np.linalg.norm(solution)
@@ -206,6 +259,8 @@ class QiskitHHLPreparedSystem:
             residual_norm=residual,
             metadata={
                 "backend": "qiskit_finite_qpe_hhl",
+                "execution": self.configuration.execution,
+                **execution_metadata,
                 "solution_state_fidelity_vs_direct": fidelity,
                 "relative_solution_error_vs_direct": float(
                     np.linalg.norm(solution - direct) / max(norm_direct, 1e-15)
@@ -218,6 +273,8 @@ class QiskitHHLPreparedSystem:
         rhs = np.asarray(right_hand_sides, dtype=float)
         if rhs.ndim != 2 or rhs.shape[1] != self.dimension:
             raise ValueError("right_hand_sides has an incompatible shape")
+        if self.configuration.execution == "statevector":
+            return np.vstack([self.execute_statevector(row)[0] for row in rhs])
         return rhs @ self._inverse_map.T
 
     def circuit_statistics(self) -> dict[str, Any]:

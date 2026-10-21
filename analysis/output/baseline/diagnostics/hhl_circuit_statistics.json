@@ -1,0 +1,67 @@
+{
+  "ancilla_qubits": 1,
+  "calibration": {
+    "condition_number": 2.999999999999999,
+    "eigenvalues": [
+      4.950495049504951,
+      4.950495049504951,
+      14.85148514851485,
+      14.85148514851485
+    ],
+    "logical_phase_bins": [
+      5,
+      5,
+      15,
+      15
+    ],
+    "maximum_relative_eigenvalue_error": 3.588240815588505e-16,
+    "phase_scale": 15.841584158415838,
+    "reconstructed_eigenvalues": [
+      4.95049504950495,
+      4.95049504950495,
+      14.851485148514849,
+      14.851485148514849
+    ]
+  },
+  "logical_qubits": 7,
+  "phase_qubits": 4,
+  "raw_depth": 29,
+  "raw_operation_counts": {
+    "c-unitary": 8,
+    "c4ry": 1,
+    "c4ry_o1": 1,
+    "c4ry_o10": 1,
+    "c4ry_o11": 1,
+    "c4ry_o12": 1,
+    "c4ry_o13": 1,
+    "c4ry_o14": 1,
+    "c4ry_o2": 1,
+    "c4ry_o3": 1,
+    "c4ry_o4": 1,
+    "c4ry_o5": 1,
+    "c4ry_o6": 1,
+    "c4ry_o7": 1,
+    "c4ry_o8": 1,
+    "c4ry_o9": 1,
+    "h": 8,
+    "permutation": 2,
+    "qft": 1,
+    "qft_dg": 1,
+    "state_preparation": 1
+  },
+  "reciprocal_constant": 2.475247524752475,
+  "system_qubits": 2,
+  "transpiled_depth": 817,
+  "transpiled_operation_counts": {
+    "cp": 12,
+    "cx": 437,
+    "h": 136,
+    "ry": 60,
+    "swap": 8,
+    "t": 240,
+    "tdg": 180,
+    "u": 120,
+    "unitary": 3,
+    "x": 56
+  }
+}

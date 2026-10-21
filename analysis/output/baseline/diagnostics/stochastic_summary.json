@@ -1,0 +1,14 @@
+{
+  "active_power_relative_standard_deviation": 0.01,
+  "convergence_rate": 1.0,
+  "correlation_convention": "paper_Fig4_positive_bus3_load_magnitude_vs_bus4_injection",
+  "empirical_injection_correlation": 0.7378892435906237,
+  "empirical_signed_injection_correlation": -0.7378892435906237,
+  "empirical_voltage_correlation": 0.9969482431183686,
+  "maximum_iterations_observed": 5,
+  "n_samples": 5000,
+  "random_seed": 210404888,
+  "requested_injection_correlation": 0.75,
+  "tolerance": 1e-05,
+  "variance_status": "reconstructed_assumption_not_reported_in_paper"
+}
